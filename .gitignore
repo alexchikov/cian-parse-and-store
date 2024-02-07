@@ -1,0 +1,7 @@
+files/
+logs/
+*.log
+*.yml
+configs/
+__pycache__
+__vscode__
