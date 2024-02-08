@@ -23,7 +23,7 @@ class Parser(object):
 
         logging.info('Initialized Parser object')
 
-    def __get_offers(self) -> (int, str):  # function for getting current offers
+    def get_offers(self) -> (int, str):  # function for getting current offers
         try:
             response = requests.post(
                 'https://api.cian.ru/search-offers/v2/search-offers-desktop/',
@@ -59,6 +59,3 @@ class Parser(object):
 
         return serialized_offers
     
-
-    def get_info_about_flat(offer: dict):
-        ...

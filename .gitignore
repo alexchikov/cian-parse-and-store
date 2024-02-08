@@ -5,3 +5,7 @@ logs/
 configs/
 __pycache__
 __vscode__
+.pytest_cache
+*.cfg
+*.db
+*.pid
