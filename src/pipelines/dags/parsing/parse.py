@@ -3,6 +3,7 @@ import json
 import logging
 import yaml
 from datetime import datetime
+from config import DAGConfig as cfg
 
 logging.basicConfig(level=logging.INFO,
                     filename='logs/parser.log',
@@ -15,7 +16,7 @@ class Parser(object):
     """
 
     def __init__(self) -> None:
-        with open('configs/config.yml') as config_file:  # uploading config
+        with open(f'{cfg.CONFIGS_PATH}/config.yml') as config_file:  # uploading config
             config_file = yaml.safe_load(config_file)
             self.__cookies = config_file['cookies']
             self.__headers = config_file['headers']
@@ -34,7 +35,7 @@ class Parser(object):
 
             data = response.json()
             filename = f'cian_{datetime.strftime(datetime.now(), "%Y-%m-%d_%H:%M:%S")}.json'
-            with open(f'files/{filename}', 'w') as file:
+            with open(f'{cfg.FILES_PATH}/{filename}', 'w') as file:
                 json.dump(obj=data,
                           fp=file,
                           indent=4,
@@ -53,7 +54,7 @@ class Parser(object):
         else:
             return (400, 'Request Failed')
 
-        with open(f'files/{offers_filename}') as offers_file:
+        with open(f'{cfg.FILES_PATH}/{offers_filename}') as offers_file:
             offers = json.load(offers_file)
         serialized_offers = offers['data']['offersSerialized']
 

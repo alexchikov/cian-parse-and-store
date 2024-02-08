@@ -9,3 +9,5 @@ __vscode__
 *.cfg
 *.db
 *.pid
+*.env
+config.py

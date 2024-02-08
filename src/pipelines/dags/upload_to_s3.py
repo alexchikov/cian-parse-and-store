@@ -1,17 +1,14 @@
 import boto3
 import os
-import sys
 import yaml
 import logging
+from config import DAGConfig as cfg
 
-sys.path.insert(0,os.path.abspath(os.path.dirname(__file__)))
-
-logging.basicConfig(filename='logs/uploader.log',
-                    level=logging.INFO,
+logging.basicConfig(filename=f'{cfg.LOGS_PATH}/uploader.log',
                     format='[%(asctime)s] %(levelname)s: %(message)s')
 
 
-with open('configs/s3.yml') as file:
+with open(f'{cfg.CONFIGS_PATH}/s3.yml') as file:
     s3_config = yaml.safe_load(file)
     BUCKET = s3_config['bucketname']
     SECRET_ACCESS_KEY = s3_config['secret_access_key']
@@ -19,8 +16,8 @@ with open('configs/s3.yml') as file:
 
 def get_latest_file():
     try:
-        ls_dir = os.listdir('files/')
-        ls_dir.sort(key=lambda x: x.split('_')[1])
+        ls_dir = os.listdir(cfg.FILES_PATH)
+        ls_dir.sort(reverse=True)
         logging.info('Successfully executed latest filename from files dir')
         return ls_dir[0]
     except IndexError:
@@ -32,7 +29,7 @@ def upload_to_s3():
     if filename:
         try:
             s3 = boto3.client('s3', aws_access_key_id=MY_KEY, aws_secret_access_key=SECRET_ACCESS_KEY)
-            s3.upload_file(f'files/{filename}', BUCKET, filename)
+            s3.upload_file(f'{cfg.FILES_PATH}/{filename}', BUCKET, filename)
             logging.info('Successfully uploaded file to S3 bucket')
             return 1
         except Exception as exc:

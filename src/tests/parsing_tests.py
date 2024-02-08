@@ -1,6 +1,6 @@
 import pytest
-from parsing.parse import Parser
-from pipelines.plugins.upload_to_s3 import upload_to_s3
+from pipelines.dags.parsing.parse import Parser
+from pipelines.dags.upload_to_s3 import upload_to_s3
 
 def test_get_offers():
     p = Parser()
