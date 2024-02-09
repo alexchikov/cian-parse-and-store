@@ -1,1 +1,1 @@
-__all__ = ['upload_to_s3.py']
+__all__ = []
