@@ -24,7 +24,7 @@ class Parser(object):
 
         logging.info('Initialized Parser object')
 
-    def get_offers(self) -> (int, str):  # function for getting current offers
+    def get_offers(self) -> tuple[int, str]:  # function for getting current offers
         try:
             response = requests.post(
                 'https://api.cian.ru/search-offers/v2/search-offers-desktop/',
@@ -34,20 +34,20 @@ class Parser(object):
             )
 
             data = response.json()
-            filename = f'cian_{datetime.strftime(datetime.now(), "%Y-%m-%d_%H:%M:%S")}.json'
-            with open(f'{cfg.FILES_PATH}/{filename}', 'w') as file:
+            self.filename = f'cian_{datetime.strftime(datetime.now(), "%Y-%m-%d_%H:%M:%S")}.json'
+            with open(f'{cfg.FILES_PATH}/{self.filename}', 'w') as file:
                 json.dump(obj=data,
                           fp=file,
                           indent=4,
                           ensure_ascii=False)
 
-            return (response.status_code, filename)
+            return (response.status_code, self.filename)
         except (requests.exceptions.ConnectionError) as exc:
             logging.error(f'{exc.__str__()}')
             return (400, 'Request Failed')
 
     def get_serialized_offers(self) -> dict:
-        response_status_code, offers_filename = self.__get_offers()
+        response_status_code, offers_filename = self.get_offers()
 
         if response_status_code == 200:
             logging.info('Successfully get current offers')
