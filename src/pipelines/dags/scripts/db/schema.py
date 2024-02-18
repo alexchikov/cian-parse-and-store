@@ -1,5 +1,5 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.types import Integer, String, Boolean, TIMESTAMP, Text
+from sqlalchemy.types import Integer, String, Boolean, TIMESTAMP, Text, Float
 from sqlalchemy import create_engine, Column
 import yaml
 import os
@@ -28,10 +28,12 @@ class Offers(Base):
                               Integer())
     flatType = Column("flatType",
                       String())
-    description = Column("description",
-                         Text())
     floor_number = Column("floorNumber",
                           Integer())
+    totalArea = Column("totalArea",
+                       Float())
+    description = Column("description",
+                         Text())
     price = Column("price",
                    Integer())
     deposit = Column("deposit",
@@ -42,6 +44,12 @@ class Offers(Base):
                             String())
     floors_count = Column("floorsCount",
                           Integer())
+    address = Column("address",
+                     String())
+    lat = Column("lat",
+                 Float())
+    lng = Column("lng",
+                 Float())
     buildYear = Column("buildYear",
                         Integer())
     photo1 = Column("photo1",
@@ -52,7 +60,7 @@ class Offers(Base):
                     String())
     phone = Column("phone",
                     String())
-    __tablename__ = "Offers"
+    __tablename__ = "offers"
     
 
 with open(filename) as file:

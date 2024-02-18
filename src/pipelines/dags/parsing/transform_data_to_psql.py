@@ -39,19 +39,25 @@ def parse_json_data():
         leaseTermType = offer["bargainTerms"]["leaseTermType"]
         paymentPeriod = offer["bargainTerms"]["paymentPeriod"]
         floorsCount = offer["building"]["floorsCount"]
-        buildYear = offer["building"]["buildYear"]
+        address = offer["geo"]["userInput"]
+        lat = offer["geo"]["coordinates"]["lat"]
+        lng = str(offer["geo"]["coordinates"]["lng"])
+        if "buildYear" in offer["building"].keys():
+            buildYear = offer["building"]["buildYear"]
+        else:
+            buildYear = None
+        totalArea = offer['totalArea']
         photo1 = offer["photos"][0]["fullUrl"]
         photo2 = offer["photos"][1]["fullUrl"]
         photo3 = offer["photos"][2]["fullUrl"]
         phone = offer["phones"][0]["countryCode"] + offer["phones"][0]["number"]
         yield (offerId, isApartments, addedTimestamp, fullUrl,
                underground_name, underground_transportType, underground_time, 
-               flatType, description, floorNumber, price, deposit,
+               flatType, floorNumber, description, price, deposit,
                leaseTermType, paymentPeriod, floorsCount, buildYear,
-               photo1, photo2, photo3, phone)
+               photo1, photo2, photo3, phone, totalArea, address, lat, lng)
         
 def insert_data_to_db():
-    file = get_latest_file()
     session = Session(bind=engine)
     ids = list(map(lambda x: x[0], session.query(Offers.id).all()))
     offers = list(parse_json_data())
@@ -65,13 +71,17 @@ def insert_data_to_db():
                                underground_transport_type=offer[5],
                                underground_time=offer[6],
                                flatType=offer[7],
-                               description=offer[8],
-                               floor_number=offer[9],
+                               floor_number=offer[8],
+                               totalArea=offer[20],
+                               description=offer[9],
                                price=offer[10],
                                deposit=offer[11],
                                lease_term_type=offer[12],
                                payment_period=offer[13],
                                floors_count=offer[14],
+                               address=offer[21],
+                               lat=offer[22],
+                               lng=offer[23],
                                buildYear=offer[15],
                                photo1=offer[16],
                                photo2=offer[17],
