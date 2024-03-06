@@ -5,7 +5,6 @@ from scripts.upload_all_to_s3 import upload_all_missing_files_to_s3, remove_all_
 
 default_dag_args = {'owner': 'alexchikov',
               'depends_on_past': False,
-              'catchup': False,
               'start_date': datetime(2024, 2, 8, 19, 35, 0),
               'email_on_failure': False,
               'email_on_retry': False,
@@ -16,7 +15,8 @@ dag = DAG(dag_id='upload_all_missing_to_s3',
           default_args=default_dag_args,
           description='This DAG finds all missing files and upload them to S3. Then remove them.',
           schedule=timedelta(days=1),
-          tags=['Cian'])
+          tags=['Cian'],
+          catchup=False)
 
 upload_all_missing = PythonOperator(task_id='upload_all_missing_to_s3',
                                     python_callable=upload_all_missing_files_to_s3,

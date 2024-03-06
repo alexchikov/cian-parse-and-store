@@ -35,7 +35,7 @@ def upload_to_s3():
         try:
             s3 = boto3.client('s3', aws_access_key_id=MY_KEY,
                               aws_secret_access_key=SECRET_ACCESS_KEY)
-            s3.upload_file(f'{cfg.FILES_PATH}/{filename}', BUCKET, filename)
+            s3.upload_file(f'{cfg.FILES_PATH}/{filename}', BUCKET, "cian/"+filename)
             logging.info('Successfully uploaded file to S3 bucket')
             return {'message': 'Task completed with no errors',
                     'code': 0}

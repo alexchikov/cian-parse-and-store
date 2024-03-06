@@ -19,7 +19,8 @@ dag = DAG(dag_id='cian_upload_to_s3_dag',
           default_args=default_dag_args,
           description='This DAG uploads parsed JSON from CIAN to S3 bucket',
           schedule_interval=timedelta(hours=12),
-          tags=['Cian'])
+          tags=['Cian'],
+          catchup=False)
     
 p = Parser()
     
